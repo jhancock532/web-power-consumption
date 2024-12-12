@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>SVG turbulence animation</title>
+    <link rel="canonical" href="https://codepen.io/jhancock532/pen/VwRPoNE" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        min-height: 100vh;
+      }
+      h1 {
+        padding-left: 2rem;
+        font-size: 8rem;
+        width: 100%;
+        filter: url(#wavy);
+      }
+    </style>
+  </head>
+
+  <body>
+    <svg>
+      <filter id="wavy">
+        <feturbulence
+          id="turbulence"
+          type="turbulence"
+          numOctaves="1"
+          result="NOISE"
+        ></feturbulence>
+        <fedisplacementmap
+          in="SourceGraphic"
+          in2="NOISE"
+          scale="25"
+        ></fedisplacementmap>
+        <animate
+          xlink:href="#turbulence"
+          attributeName="baseFrequency"
+          dur="25s"
+          keyTimes="0;0.5;1"
+          values="0.01 0.02;0.02 0.04;0.01 0.02"
+          repeatCount="indefinite"
+        ></animate>
+      </filter>
+    </svg>
+    <h1>Hello world!</h1>
+  </body>
+</html>

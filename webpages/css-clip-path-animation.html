@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Clip Path Animation</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .speech-bubble {
+        background-color: red;
+        max-width: 400px;
+        padding: 40px;
+      }
+
+      .speech-bubble__content {
+        background-color: black;
+        color: white;
+        padding: 20px;
+        font-size: 24px;
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        animation: clipMovement 1s alternate infinite;
+      }
+
+      @keyframes clipMovement {
+        0% {
+          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        }
+        100% {
+          clip-path: polygon(0% 10%, 90% 0%, 90% 100%, 10% 90%);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="speech-bubble">
+      <div class="speech-bubble__wrapper" id="speechWrapper">
+        <p class="speech-bubble__content">
+          This is some test text for the speech bubble.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Gradient Layers Animation</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: #111;
+        overflow: hidden;
+      }
+
+      .gradient {
+        position: absolute;
+        top: -100px;
+        left: -100px;
+        right: -100px;
+        bottom: -100px;
+      }
+
+      #red {
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(255, 0, 0, 1) 0%,
+          rgba(0, 0, 0, 0) 50%
+        );
+      }
+
+      #orange {
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(255, 125, 0, 1) 0%,
+          rgba(0, 0, 0, 0) 50%
+        );
+      }
+
+      #yellow {
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(255, 255, 0, 1) 0%,
+          rgba(0, 0, 0, 0) 50%
+        );
+      }
+
+      #green {
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(0, 255, 0, 1) 0%,
+          rgba(0, 0, 0, 0) 50%
+        );
+      }
+
+      #blue {
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(0, 0, 255, 1) 0%,
+          rgba(0, 0, 0, 0) 50%
+        );
+      }
+
+      #indigo {
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(0, 125, 255, 1) 0%,
+          rgba(0, 0, 0, 0) 50%
+        );
+      }
+
+      #violet {
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(255, 0, 125, 1) 0%,
+          rgba(0, 0, 0, 0) 50%
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Comment out the gradients to see the affect on power consumption for different amounts. -->
+    <div class="gradient" style="display: none" id="red"></div>
+    <div class="gradient" style="display: none" id="orange"></div>
+    <div class="gradient" style="display: none" id="yellow"></div>
+    <div class="gradient" style="display: none" id="green"></div>
+    <div class="gradient" style="display: none" id="blue"></div>
+    <div class="gradient" style="display: none" id="indigo"></div>
+    <div class="gradient" style="display: none" id="violet"></div>
+
+    <script>
+      const lights = document.getElementsByClassName("gradient");
+
+      // Extracting URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const gradientsParam = urlParams.get("gradients");
+      const gradientsVariable = parseInt(gradientsParam) || 5;
+
+      for (let i = 0; i < gradientsVariable; i++) {
+        lights[i].style.display = "block";
+
+        let offset = i * 500;
+        lights[i].animate(
+          [
+            //keyframes
+            {
+              opacity: "0.25",
+              transform: `translate(${-25 + Math.random() * 50}%,${
+                -25 + Math.random() * 50
+              }%)`,
+            },
+            {
+              opacity: "1",
+              transform: `translate(${-25 + Math.random() * 50}%,${
+                -25 + Math.random() * 50
+              }%)`,
+            },
+          ],
+          {
+            // timing options
+            duration: 1000 + Math.random() * 2000,
+            easing: "ease-in-out",
+            iterations: Infinity,
+            direction: "alternate",
+            iterationStart: Math.random() * 2000,
+          }
+        );
+      }
+    </script>
+  </body>
+</html>
