@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>window.ai</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        #error-message {
+            display: none;
+            color: #d32f2f;
+            padding: 1em;
+            background: #ffebee;
+            border-radius: 4px;
+            margin-bottom: 1em;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+        button {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1557b0;
+        }
+        .stats {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        .response-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .response-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chrome AI Demo</h1>
+        
+        <div id="error-message"></div>
+        
+        <div id="prompt-container">
+            <textarea id="prompt" placeholder="Enter your prompt here..."></textarea>
+            <button id="submit">Generate Response</button>
+            <button id="reset">Reset</button>
+        </div>
+
+        <div id="response-container" class="response-container"></div>
+        
+        <div class="stats">
+            <p>Temperature: <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7"></p>
+            <p>Top K: <input type="range" id="topk" min="1" max="40" step="1" value="40"></p>
+        </div>
+    </div>
+
+    <script>
+        (async () => {
+            const errorMessage = document.getElementById('error-message');
+            const promptInput = document.getElementById('prompt');
+            const responseDiv = document.getElementById('response');
+            const submitButton = document.getElementById('submit');
+            const resetButton = document.getElementById('reset');
+            const temperatureInput = document.getElementById('temperature');
+            const topKInput = document.getElementById('topk');
+
+            // Check if AI API is available
+            if (!window.ai || !window.ai.languageModel) {
+                errorMessage.style.display = 'block';
+                errorMessage.innerHTML = 'Your browser doesn\'t support the AI API. Enable it in Chrome\'s Early Preview Program.';
+                return;
+            }
+
+            let session = null;
+
+            async function initSession() {
+                try {
+                    session = await window.ai.languageModel.create({
+                        temperature: Number(temperatureInput.value),
+                        topK: Number(topKInput.value)
+                    });
+                } catch (error) {
+                    console.error('Failed to create session:', error);
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = `Error: ${error.message}`;
+                }
+            }
+
+            async function generateResponse() {
+                const prompt = promptInput.value.trim();
+                if (!prompt) return;
+
+                try {
+                    if (!session) {
+                        await initSession();
+                    }
+
+                    const responseItem = document.createElement('div');
+                    responseItem.className = 'response-item';
+                    responseItem.textContent = 'Generating response...';
+                    document.getElementById('response-container').appendChild(responseItem);
+                    
+                    submitButton.disabled = true;
+
+                    const stream = await session.promptStreaming(prompt);
+                    let fullResponse = '';
+
+                    for await (const chunk of stream) {
+                        fullResponse = chunk.trim();
+                        responseItem.textContent = fullResponse;
+                    }
+
+                    // Start the next generation after a short delay
+                    setTimeout(generateResponse, 1);
+
+                } catch (error) {
+                    const errorItem = document.createElement('div');
+                    errorItem.className = 'response-item';
+                    errorItem.textContent = `Error: ${error.message}`;
+                    document.getElementById('response-container').appendChild(errorItem);
+                    submitButton.disabled = false;
+                }
+            }
+
+            function reset() {
+                promptInput.value = '';
+                document.getElementById('response-container').innerHTML = '';
+                tokenCount.textContent = '0';
+                if (session) {
+                    session.destroy();
+                    session = null;
+                }
+                initSession();
+            }
+
+            // Event listeners
+            submitButton.addEventListener('click', generateResponse);
+            resetButton.addEventListener('click', reset);
+            temperatureInput.addEventListener('change', () => {
+                if (session) {
+                    session.destroy();
+                    session = null;
+                }
+                initSession();
+            });
+
+            topKInput.addEventListener('change', () => {
+                if (session) {
+                    session.destroy();
+                    session = null;
+                }
+                initSession();
+            });
+
+            // Initialize
+            await initSession();
+        })();
+    </script>
+</body>
+</html>
