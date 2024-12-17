@@ -29,3 +29,23 @@ For logging at regular intervals, to get a more granular view of how the energy 
 ```bash
 script -q output.txt bash -c "sudo powermetrics --samplers cpu_power --show-process-gpu -i 100 | perl -ne 'print if /Power:/'"
 ```
+
+## Links to live instances of the test webpages
+
+- [CSS Clip Path Animation](https://jhancock532.github.io/web-power-consumption/webpages/css-clip-path-animation.html)
+- [CSS Gradient Layers Animation](https://jhancock532.github.io/web-power-consumption/webpages/css-gradient-layers-animation.html)
+- [Static Empty Page](https://jhancock532.github.io/web-power-consumption/webpages/static-empty-page.html)
+- [SVG Path Animation](https://jhancock532.github.io/web-power-consumption/webpages/svg-path-animation.html)
+- [SVG Turbulence Animation](https://jhancock532.github.io/web-power-consumption/webpages/svg-turbulence-animation.html)
+- [Video Element Large](https://jhancock532.github.io/web-power-consumption/webpages/video-element-large.html)
+- [Video Element Small](https://jhancock532.github.io/web-power-consumption/webpages/video-element-small.html)
+- [Vimeo Embed Large](https://jhancock532.github.io/web-power-consumption/webpages/vimeo-embed-large.html)
+- [Vimeo Embed Small](https://jhancock532.github.io/web-power-consumption/webpages/vimeo-embed-small.html)
+- [WebGL Animated Scene](https://jhancock532.github.io/web-power-consumption/webpages/webgl-animated-scene.html)
+- [WebGL Complex](https://jhancock532.github.io/web-power-consumption/webpages/webgl-complex.html)
+- [WebGL Large](https://jhancock532.github.io/web-power-consumption/webpages/webgl-large.html)
+- [WebGL Small](https://jhancock532.github.io/web-power-consumption/webpages/webgl-small.html)
+- [WebGL Vortex](https://jhancock532.github.io/web-power-consumption/webpages/webgl-vortex.html)
+- [YouTube Embed Large](https://jhancock532.github.io/web-power-consumption/webpages/youtube-embed-large.html)
+- [YouTube Embed Small](https://jhancock532.github.io/web-power-consumption/webpages/youtube-embed-small.html)
+- [Chrome Window AI](https://jhancock532.github.io/web-power-consumption/webpages/chrome-window-ai.html) (requires feature flags enabled, only works on Chrome)
