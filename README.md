@@ -2,14 +2,13 @@
 
 This repository contains example webpages to test browser energy usage with. The testing method outlined below is supported on MacOS devices using the M series chips.
 
-When testing, ensure that any non-essential processes are stopped, as these could affect the energy usage results.
-
 For consistency:
 
+- Ensure that any non-essential processes are stopped on your device. 
 - Use an incognito tab of your chosen browser without any extensions installed.
 - Make sure the browser renders at the same size for all tests (fullscreen or 1440 x 900).
-- For testing video embeds I pressed play then waited five seconds before recording energy usage.
-- Disable live captions in Chrome - chrome://settings/accessibility
+- For testing video embeds I pressed play then waited five seconds before recording energy usage. This results in a lower energy usage reading than when including the setup and download of the embed itself.
+- Disable live captions in Chrome, which can effect video playback - chrome://settings/accessibility
 
 ## Testing with powermetrics
 
@@ -30,10 +29,3 @@ For logging at regular intervals, to get a more granular view of how the energy 
 ```bash
 script -q output.txt bash -c "sudo powermetrics --samplers cpu_power --show-process-gpu -i 100 | perl -ne 'print if /Power:/'"
 ```
-
-This output can then be parsed with a script into a more usable format. Consider asking your favourite LLM to generate this script for you (an example is provided in the `scripts` directory).
-
-## Improvements
-
-- Test against an identical video file uploaded to Vimeo and YouTube for consistency.
-- Create a test webpage for a video streaming service that advocates itself as highly optimised, to see how much of an improvement it offers to standard video embeds.
